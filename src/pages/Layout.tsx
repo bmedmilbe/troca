@@ -16,7 +16,7 @@ const Layout = () => {
         <div className="container-fluid">
           <a className="navbar-brand" href="/">
             <img
-              src="src/assets/exchange.png"
+              src="/src/assets/exchange.png"
               alt="Logo"
               width="30"
               height="24"
