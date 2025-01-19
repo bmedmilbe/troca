@@ -11,15 +11,15 @@ const routes = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
-    children: [{ path: "login", element: <LoginPage /> }],
+    children: [{ path: "login/", element: <LoginPage /> }],
   },
   {
     element: <PrivateLayout />,
     children: [
       { index: true, element: <UsersPage /> },
-      { path: "users/:id", element: <TransactionPage /> },
-      { path: "friends", element: <FriendsPage /> },
-      { path: "friends/:id", element: <FriendPage /> },
+      { path: "users/:id/", element: <TransactionPage /> },
+      { path: "friends/", element: <FriendsPage /> },
+      { path: "friends/:id/", element: <FriendPage /> },
     ],
   },
 ]);
