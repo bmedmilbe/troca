@@ -3,7 +3,7 @@ import axios, { AxiosRequestConfig } from "axios";
 import cookie from "./getCookie";
 import jwt from "./jwt";
 const instance = axios.create({
-  baseURL: "http://localhost:8000/",
+  baseURL: `${import.meta.env.VITE_BASE_URL}/`,
   timeout: 500000,
   headers: {
     "X-CSRFToken": cookie,
