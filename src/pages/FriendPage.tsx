@@ -55,7 +55,7 @@ const FriendPage = () => {
             onClick={() => setModalShow(true)}
             className="btn btn-primary m-1"
           >
-            {"pagmentos >"}
+            {"pagamentos >"}
           </button>
         </div>
 
