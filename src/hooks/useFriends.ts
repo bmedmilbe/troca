@@ -1,17 +1,20 @@
-import React from "react";
+import { useQuery } from "@tanstack/react-query";
 import ApiClient from "../services/api-client";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { NewPayment } from "./useAddPayment";
+import { Transaction } from "./useTransactions";
 
 export interface Friend {
   id: number;
   name: string;
+  transations: Transaction[];
+  payments: NewPayment[];
 }
 
-const useFriends = () => {
+const useFriends = <Friend>() => {
   const client = new ApiClient<Friend>("troca/friends");
   return useQuery({
     queryKey: ["friends"],
-    queryFn: client.getAll,
+    queryFn: client.getAllSecond,
   });
 };
 

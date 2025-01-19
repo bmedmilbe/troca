@@ -1,5 +1,5 @@
-import ApiClient from "../services/api-client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import ApiClient from "../services/api-client";
 import { Transaction } from "./useTransactions";
 
 const useDeleteTransaction = () => {
@@ -7,10 +7,10 @@ const useDeleteTransaction = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: Transaction) => client.deleteTransaction(data),
-    onSuccess: (responseData, SentData) => {
+    mutationFn: (data: Transaction) => client.deleteTransaction(data?.id || 0),
+    onSuccess: () => {
       // Invalidate the cache
-      console.log(responseData);
+      // console.log(responseData);
       queryClient.invalidateQueries({
         queryKey: ["transactions"],
       });

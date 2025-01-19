@@ -1,23 +1,23 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import ApiClient from "../services/api-client";
-import { Transaction } from "./useTransactions";
 
-export interface NewTransaction {
+export interface NewPayment {
   id?: number;
-  description?: string;
-  value?: string;
-  friend?: number;
-  is_charge?: boolean;
-  completed_by?: number;
+  description: string;
+  value: number;
+  friend: number;
+  date?: string;
 }
 
-const useAddTransation = () => {
-  const client = new ApiClient<Transaction>("troca/transactions");
+const useAddPayment = (friend_id: number) => {
+  const client = new ApiClient<NewPayment>(
+    "troca/friends/" + friend_id + "/payments"
+  );
   const queryClient = useQueryClient();
   // interface AddTransactionContext {
   //   previousTransations: Transaction[];
   // }
-  return useMutation<Transaction, Error, Transaction>({
+  return useMutation<NewPayment, Error, NewPayment>({
     mutationFn: client.save,
 
     onSuccess: () => {
@@ -30,4 +30,4 @@ const useAddTransation = () => {
   });
 };
 
-export default useAddTransation;
+export default useAddPayment;

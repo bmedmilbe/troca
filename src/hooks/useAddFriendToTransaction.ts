@@ -1,21 +1,21 @@
-import React from "react";
-import ApiClient from "../services/api-client";
-import { useMutation } from "@tanstack/react-query";
+// import { useMutation } from "@tanstack/react-query";
+// import ApiClient from "../services/api-client";
 
-export interface FriendSending {
-  friend?: number;
-  friend_paid?: boolean;
-}
+// export interface FriendSending {
+//   id?: number;
+//   friend?: number;
+//   friend_paid?: boolean;
+// }
 
-const useAddFriendToTransaction = () => {
-  const client = new ApiClient<FriendSending>("troca/transactions");
+// const useAddFriendToTransaction = () => {
+//   const client = new ApiClient<FriendSending>("troca/transactions");
 
-  return useMutation({
-    mutationFn: (data: FriendSending) => client.setFriend(data),
-    // onSuccess: (responseData, SentData) => {
-    //   console.log(responseData);
-    // },
-  });
-};
+//   return useMutation({
+//     mutationFn: (data: FriendSending) => client.setFriend(data.id),
+//     // onSuccess: (responseData, SentData) => {
+//     //   console.log(responseData);
+//     // },
+//   });
+// };
 
-export default useAddFriendToTransaction;
+// export default useAddFriendToTransaction;

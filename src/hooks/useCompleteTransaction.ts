@@ -1,17 +1,18 @@
-import ApiClient from "../services/api-client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import ApiClient from "../services/api-client";
 import { Transaction } from "./useTransactions";
 
 const useCompleteTransaction = () => {
   const client = new ApiClient<Transaction>("troca/transactions");
   const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (data: Transaction) => client.completeTransaction(data),
-    onSuccess: (responseData, SentData) => {
+  return useMutation<Transaction, Error, Transaction>({
+    mutationFn: (data: Transaction) => client.completeTransaction(data.id || 0),
+    onSuccess: () => {
+      // onSuccess: (responseData, SentData) => {
       // Invalidate the cache
-      console.log(responseData);
+      // console.log(responseData);
       queryClient.invalidateQueries({
-        queryKey: ["transactions"],
+        queryKey: ["transactions", "remain"],
       });
     },
   });

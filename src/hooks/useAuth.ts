@@ -1,7 +1,6 @@
-import axios from "axios";
-import { UserLogin } from "../services/authServices";
 import { useMutation } from "@tanstack/react-query";
 import ApiClient from "../services/api-client";
+import { UserLogin } from "../services/authServices";
 
 export interface LoginResponse {
   access: string;
@@ -11,11 +10,13 @@ export interface LoginResponse {
 const useAuth = () => {
   const apiClient = new ApiClient<UserLogin>("auth/jwt/create");
 
-  return useMutation<LoginResponse, Error, UserLogin>({
+  return useMutation<UserLogin, Error, UserLogin>({
     mutationFn: apiClient.save,
-    onSuccess: (responseData: LoginResponse, userLogin: UserLogin) => {
-      console.log(responseData);
-      localStorage.setItem("access", responseData.access);
+    onSuccess: (responseData: UserLogin) => {
+      // console.log(responseData);
+      if (responseData?.access)
+        localStorage.setItem("access", responseData?.access);
+      location.href = "/";
     },
   });
 };

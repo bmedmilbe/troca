@@ -1,7 +1,7 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 
-import jwt from "./jwt";
 import cookie from "./getCookie";
+import jwt from "./jwt";
 const instance = axios.create({
   baseURL: "http://localhost:8000/",
   timeout: 500000,
@@ -14,41 +14,49 @@ const instance = axios.create({
   },
 });
 
-interface ResponseA<T> {
+export interface ResponseA<T> {
   count: number;
   results: T[];
 }
 interface addId {
   id: number | undefined;
 }
-type TypeWithId = T | addId;
+// type addId = T | addId;
 class ApiClient<T> {
   endpoint: string;
 
   constructor(endpoint: string) {
     this.endpoint = endpoint + "/";
   }
-  getAll = () => {
+  getAll = (params: AxiosRequestConfig) => {
     return instance
-      .get<ResponseA<T>>(this.endpoint)
+      .get<ResponseA<T>>(this.endpoint, params)
       .then((res) => res.data.results);
+  };
+  getAllSimple = (params: AxiosRequestConfig) => {
+    return instance.get<T>(this.endpoint, params).then((res) => res.data);
+  };
+  getAllSecond = (params: AxiosRequestConfig) => {
+    return instance
+      .get<ResponseA<T>>(this.endpoint, params)
+      .then((res) => res.data);
   };
   save = (data: T) => {
     return instance.post<T>(this.endpoint, data).then((res) => res.data);
   };
-  setFriend = (data: TypeWithId) => {
+  setFriend = (id: number, data: T) => {
     return instance
-      .patch<T | addId>(this.endpoint + `${data.id}/set_friend/`, data)
+      .patch<T>(this.endpoint + `${id}/set_friend/`, data)
       .then((res) => res.data);
   };
-  completeTransaction = (data: TypeWithId) => {
+  completeTransaction = (id: number) => {
     return instance
-      .patch<T | addId>(this.endpoint + `${data.id}/complete/`, data)
+      .patch<T>(this.endpoint + `${id}/complete/`)
       .then((res) => res.data);
   };
-  deleteTransaction = (data: TypeWithId) => {
+  deleteTransaction = (id: number) => {
     return instance
-      .delete<T | addId>(this.endpoint + `${data.id}/delete/`)
+      .delete<T | addId>(this.endpoint + `${id}/delete/`)
       .then((res) => res.data);
   };
 }

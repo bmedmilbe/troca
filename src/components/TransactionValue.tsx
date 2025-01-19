@@ -40,13 +40,15 @@ const TransactionValue = ({ transaction, remain, handleDelete }: Props) => {
       //   setRemain(valuesIGot);
     }
   }, []);
-  const color = (status: boolean) => {
-    return status ? "text-secondary" : "text-warning";
+  const color = (tr: Transaction) => {
+    if (tr.is_charge) return "text-success";
+    else if (tr.completed) return "text-secondary";
+    return "text-warning";
   };
   return (
     <>
       <span
-        className={`fw-bold fs-4 ${color(completed)}`}
+        className={`fw-bold fs-4 ${color(currentTransaction)}`}
         onClick={() => setButtonsOpen(!buttonsOpen)}
       >
         {completed ? "-" : ""}

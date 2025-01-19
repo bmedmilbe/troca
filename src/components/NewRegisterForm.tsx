@@ -1,45 +1,61 @@
 import React, { FormEvent, useState } from "react";
-import useAddTransation, { NewTransaction } from "../hooks/useAddTransation";
-import useFriends from "../hooks/useFriends";
-import useAddFriendToTransaction, {
-  FriendSending,
-} from "../hooks/useAddFriendToTransaction";
+import useAddTransation from "../hooks/useAddTransation";
+import useFriends, { Friend } from "../hooks/useFriends";
+import { Transaction } from "../hooks/useTransactions";
 
-const NewRegisterForm = () => {
-  const { data: friends } = useFriends();
-  const addFriend = useAddFriendToTransaction();
-  // console.log(friends);
+interface Props {
+  deliver: number;
+}
+const NewRegisterForm = ({ deliver }: Props) => {
+  const { data: result } = useFriends<Friend>();
+
+  const friends = result;
   const addTransaction = useAddTransation();
-  const [formData, setFormData] = useState<NewTransaction>({
-    description: undefined,
+  const [formData, setFormData] = useState<Transaction>({
+    id: 0,
+    description: "",
     value: undefined,
-  });
-  const [formFriend, setFormFriend] = useState<FriendSending>({
-    friend: undefined,
+    date: "",
+    completed: false,
+    completed_date: "",
+    friend: "",
+    completed_by: deliver,
     friend_paid: false,
+    is_charge: false,
   });
+
   const nextTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
   const nextInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
+  const nextInputCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.id]: e.target.checked });
+  };
+
   const nextSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setFormFriend({ ...formFriend, [e.target.id]: e.target.value });
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+    // setFormFriend({ ...formFriend, [e.target.id]: e.target.value });
   };
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent default form submission behavior
-    addTransaction.mutate({ ...formData, ...formFriend });
 
-    if (addTransaction.isSuccess && !addTransaction.isLoading) {
-      let chatBoxRef = document.getElementById("transactions");
+    // console.log(formData);
+    // return;
+    addTransaction.mutate({ ...formData });
 
-      setTimeout(() => {
-        if (chatBoxRef) {
-          chatBoxRef.scrollTop = chatBoxRef.scrollHeight + 10;
-        }
-      }, 300);
-    }
+    let chatBoxRef = document.getElementById("transactions");
+
+    setTimeout(() => {
+      if (chatBoxRef) {
+        chatBoxRef.scrollTop = chatBoxRef.scrollHeight;
+      }
+      if (formData.is_charge && !addTransaction.isLoading) {
+        // nav("/users/" + deliver);
+        window.location.reload();
+      }
+    }, 300);
 
     // if (!addTransaction.isLoading && addTransaction?.data?.id) {
     //   addFriend.mutate({ ...formFriend, id: addTransaction.data.id });
@@ -48,17 +64,35 @@ const NewRegisterForm = () => {
 
   return (
     <>
-      {/* <h1 className="fs-4 text-center">Registrar valor</h1> */}
+      {addTransaction.isLoading && (
+        <span className="text-success">salvand...</span>
+      )}
       <form onSubmit={handleSubmit}>
-        <textarea
-          placeholder="Descrição"
-          className="form-control rounded-0  border-0 border-top border-bottom shadow-none"
-          onChange={nextTextArea}
-          id="description"
-          value={formData.description}
-        >
-          {formData.description}
-        </textarea>
+        <div className="d-flex">
+          <textarea
+            placeholder="Descrição"
+            className="form-control rounded-0  border-0 border-top border-bottom shadow-none"
+            onChange={nextTextArea}
+            id="description"
+            value={formData.description}
+          >
+            {formData.description}
+          </textarea>
+          <div className="form-check text-center p-2">
+            {" "}
+            <input
+              type="checkbox"
+              name="is_charge"
+              id="is_charge"
+              className="form-check-input float-none mx-auto"
+              onChange={nextInputCheck}
+            />
+            <br />
+            <label htmlFor="is_charge" className="form-check-label">
+              Carregamento
+            </label>
+          </div>
+        </div>
 
         <div className="d-flex">
           <div className="py-2 w-100">
@@ -66,11 +100,11 @@ const NewRegisterForm = () => {
               className="form-select rounded-0  border-0 border-bottom shadow-none"
               name="friend"
               id="friend"
-              value={formFriend.friend}
+              value={formData?.friend}
               onChange={nextSelect}
             >
               <option value={0}>Em nome de...</option>
-              {friends?.map((a) => (
+              {friends?.results?.map((a) => (
                 <option key={a.id} value={a.id}>
                   {a.name}
                 </option>
