@@ -2,7 +2,7 @@ import React from "react";
 import useDeleteTransaction from "../hooks/useDeleteTransaction";
 import useRemain from "../hooks/useRemain";
 import useTransactions, { Transaction } from "../hooks/useTransactions";
-import { month } from "../services/dates";
+import { day, month } from "../services/dates";
 import TransactionValue from "./TransactionValue";
 interface Props {
   boss?: number;
@@ -101,8 +101,8 @@ const TransactionDeliver = ({ boss, deliver }: Props) => {
                   style={{ width: "6rem" }}
                 >
                   <span className="fw-bold fs-4">
-                    {transaction.id}
-                    {/* {day(transaction.date)} */}
+                    {/* {transaction.id} */}
+                    {day(transaction.date)}
                   </span>
                   <span className="text-lowercase">
                     {month(transaction.date)}

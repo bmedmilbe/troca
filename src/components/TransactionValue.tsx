@@ -49,7 +49,9 @@ const TransactionValue = ({ transaction, remain, handleDelete }: Props) => {
     <>
       <span
         className={`fw-bold fs-4 ${color(currentTransaction)}`}
-        onClick={() => setButtonsOpen(!buttonsOpen)}
+        onClick={() =>
+          !transaction.is_charge ? setButtonsOpen(!buttonsOpen) : {}
+        }
       >
         {completed ? "-" : ""}
         {value},00
