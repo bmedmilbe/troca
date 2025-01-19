@@ -53,7 +53,7 @@ const NewRegisterForm = ({ deliver }: Props) => {
       }
       if (formData.is_charge && !addTransaction.isLoading) {
         // nav("/users/" + deliver);
-        window.location.reload();
+        // window.location.reload();
       }
     }, 300);
 

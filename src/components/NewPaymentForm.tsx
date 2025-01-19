@@ -27,7 +27,7 @@ const NewPaymentForm = ({ friend }: Props) => {
     addPayment.mutate({ ...formData });
 
     setTimeout(() => {
-      window.location.reload();
+      // window.location.reload();
     }, 300);
 
     // if (!addTransaction.isLoading && addTransaction?.data?.id) {

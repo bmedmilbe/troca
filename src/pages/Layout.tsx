@@ -1,12 +1,14 @@
 import React, { useState } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import { Customer } from "../hooks/useCustomers";
 import useMe from "../hooks/useMe";
 
 const Layout = () => {
+  const nav = useNavigate();
   const handleLogout = () => {
     localStorage.removeItem("access");
-    location.href = "/login";
+    // nav("login");
+    location.href = "/";
   };
   const [collapsed, setCollapsed] = useState(true);
   const { data, isLoading } = useMe<Customer>();
