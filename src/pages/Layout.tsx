@@ -15,8 +15,16 @@ const Layout = () => {
       <nav className="navbar navbar-expand-lg bg-light">
         <div className="container-fluid">
           <a className="navbar-brand" href="/">
-            Sistema
+            <img
+              src="src/assets/exchange.png"
+              alt="Logo"
+              width="30"
+              height="24"
+              className="d-inline-block align-text-top"
+            />
+            <h1 className="d-inline">Troca</h1>
           </a>
+
           <button
             className="navbar-toggler"
             type="button"
