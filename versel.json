@@ -1,0 +1,28 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://api.example.com/:path*"
+    },
+    {
+      "source": "/",
+      "destination": "https://troca-4apd.vercel.app/"
+    },
+    {
+      "source": "/login/",
+      "destination": "https://troca-4apd.vercel.app/login"
+    },
+    {
+      "source": "/users/:id/",
+      "destination": "https://troca-4apd.vercel.app/users/:id/"
+    },
+    {
+      "source": "/friends/",
+      "destination": "https://troca-4apd.vercel.app/friends/"
+    },
+    {
+      "source": "/friends/:id/",
+      "destination": "https://troca-4apd.vercel.app/friends/:id/"
+    }
+  ]
+}
