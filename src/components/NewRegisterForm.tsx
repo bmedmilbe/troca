@@ -59,7 +59,7 @@ const NewRegisterForm = ({ deliver }: Props) => {
         // nav("/users/" + deliver);
         // window.location.reload();
       }
-    }, 300);
+    }, 1000);
 
     // if (!addTransaction.isLoading && addTransaction?.data?.id) {
     //   addFriend.mutate({ ...formFriend, id: addTransaction.data.id });
