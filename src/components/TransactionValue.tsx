@@ -51,9 +51,7 @@ const TransactionValue = ({ transaction, remain, handleDelete }: Props) => {
     <>
       <span
         className={`fw-bold fs-4 ${color(currentTransaction)}`}
-        onClick={() =>
-          !transaction.is_charge ? setButtonsOpen(!buttonsOpen) : {}
-        }
+        onClick={() => setButtonsOpen(!buttonsOpen)}
       >
         {completed ? "-" : ""}
         {value},00
@@ -66,12 +64,14 @@ const TransactionValue = ({ transaction, remain, handleDelete }: Props) => {
       </span>
       {buttonsOpen && (
         <div className="d-flex justify-content-center border">
-          <button
-            onClick={() => handleComplete(currentTransaction)}
-            className="m-1 btn btn-success btn-sm"
-          >
-            {updateTransaction.isLoading ? "Conluindo..." : "Concluído"}
-          </button>
+          {!transaction.is_charge && !transaction.completed && (
+            <button
+              onClick={() => handleComplete(currentTransaction)}
+              className="m-1 btn btn-success btn-sm"
+            >
+              {updateTransaction.isLoading ? "Conluindo..." : "Concluído"}
+            </button>
+          )}
           <button
             onClick={() => handleDelete(currentTransaction)}
             className="m-1 btn btn-danger btn-sm"
