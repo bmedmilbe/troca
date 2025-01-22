@@ -24,6 +24,7 @@ const TransactionValue = ({ transaction, remain, handleDelete }: Props) => {
         if (updateTransaction.data?.completed) {
           setCurrentTransaction({ ...updateTransaction.data });
         }
+        setColor(handleColor({ ...transaction, completed: true }));
         setCompleted(true);
         setButtonsOpen(false);
       }
@@ -34,6 +35,7 @@ const TransactionValue = ({ transaction, remain, handleDelete }: Props) => {
 
   useEffect(() => {
     setValue(currentTransaction.value);
+    setColor(handleColor(currentTransaction));
     if (completed) {
       //should check who completed the transaction
       //   setValuesIGot(valuesIGot - transaction.value);
@@ -41,7 +43,9 @@ const TransactionValue = ({ transaction, remain, handleDelete }: Props) => {
     }
   }, []);
 
-  const color = (tr: Transaction) => {
+  const [color, setColor] = useState("");
+
+  const handleColor = (tr: Transaction) => {
     if (tr.is_charge) return "text-success";
     else if (tr.completed) return "text-secondary";
     return "text-warning";
@@ -50,7 +54,7 @@ const TransactionValue = ({ transaction, remain, handleDelete }: Props) => {
   return (
     <>
       <span
-        className={`fw-bold fs-4 ${color(currentTransaction)}`}
+        className={`fw-bold fs-4 ${color}`}
         onClick={() => setButtonsOpen(!buttonsOpen)}
       >
         {completed ? "-" : ""}
