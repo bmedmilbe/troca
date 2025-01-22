@@ -2,12 +2,15 @@ import React, { FormEvent, useState } from "react";
 import useAddTransation from "../hooks/useAddTransation";
 import useFriends, { Friend } from "../hooks/useFriends";
 import { Transaction } from "../hooks/useTransactions";
+import useMe from "../hooks/useMe";
+import { Customer } from "../hooks/useCustomers";
 
 interface Props {
   deliver: number;
 }
 const NewRegisterForm = ({ deliver }: Props) => {
   const { data: result } = useFriends<Friend>();
+  const { data: me } = useMe<Customer>();
 
   const friends = result;
   const addTransaction = useAddTransation();
@@ -22,6 +25,7 @@ const NewRegisterForm = ({ deliver }: Props) => {
     completed_by: deliver,
     friend_paid: false,
     is_charge: false,
+    boss_id: me?.id,
   });
 
   const nextTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {

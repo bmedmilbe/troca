@@ -20,12 +20,16 @@ const useAddTransation = () => {
   return useMutation<Transaction, Error, Transaction>({
     mutationFn: client.save,
 
-    onSuccess: () => {
+    onSuccess: (data) => {
       // Invalidate the cache
-      // console.log(responseData);
-      queryClient.invalidateQueries({
-        queryKey: ["transactions"],
-      });
+
+      Promise.all([
+        queryClient.invalidateQueries(["transactions"]),
+        queryClient.invalidateQueries([
+          "remain",
+          { boss: data.boss_id, deliver: data.completed_by },
+        ]),
+      ]);
     },
   });
 };
