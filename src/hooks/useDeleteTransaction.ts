@@ -8,12 +8,14 @@ const useDeleteTransaction = () => {
 
   return useMutation({
     mutationFn: (data: Transaction) => client.deleteTransaction(data?.id || 0),
-    onSuccess: () => {
-      // Invalidate the cache
-      // console.log(responseData);
-      queryClient.invalidateQueries({
-        queryKey: ["transactions"],
-      });
+    onSuccess: (data) => {
+      Promise.all([
+        queryClient.invalidateQueries(["transactions"]),
+        queryClient.invalidateQueries([
+          "remain",
+          { boss: data.boss_id, deliver: data.completed_by },
+        ]),
+      ]);
     },
   });
 };

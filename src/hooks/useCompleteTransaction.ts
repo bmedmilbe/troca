@@ -8,14 +8,6 @@ const useCompleteTransaction = () => {
   return useMutation<Transaction, Error, Transaction>({
     mutationFn: (data: Transaction) => client.completeTransaction(data.id || 0),
     onSuccess: (data) => {
-      // onSuccess: (responseData, SentData) => {
-      // Invalidate the cache
-      // console.log(responseData);
-      // console.log(data);
-      // queryClient.invalidateQueries({
-      //   queryKey: ["transactions", "remain"],
-      // });
-
       Promise.all([
         queryClient.invalidateQueries(["transactions"]),
         queryClient.invalidateQueries([

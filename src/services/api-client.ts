@@ -56,7 +56,7 @@ class ApiClient<T> {
   };
   deleteTransaction = (id: number) => {
     return instance
-      .delete<T | addId>(this.endpoint + `${id}/delete/`)
+      .delete<T>(this.endpoint + `${id}/delete/`)
       .then((res) => res.data);
   };
 }
