@@ -18,9 +18,7 @@ export interface ResponseA<T> {
   count: number;
   results: T[];
 }
-interface addId {
-  id: number | undefined;
-}
+
 // type addId = T | addId;
 class ApiClient<T> {
   endpoint: string;
