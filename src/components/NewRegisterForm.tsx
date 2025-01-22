@@ -27,11 +27,15 @@ const NewRegisterForm = ({ deliver }: Props) => {
     is_charge: false,
     boss: me?.id,
   });
-
+  const [inputError, setInputError] = useState("");
   const nextTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setInputError("");
+
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
   const nextInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputError("");
+
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
   const nextInputCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,13 +48,19 @@ const NewRegisterForm = ({ deliver }: Props) => {
   };
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent default form submission behavior
-
+    if (!formData.description) {
+      setInputError("Insira a descrição.");
+      return;
+    } else if (!formData.value) {
+      setInputError("Insira o valor.");
+      return;
+    }
     // console.log(formData);
     // return;
     addTransaction.mutate({ ...formData });
 
     let chatBoxRef = document.getElementById("transactions");
-
+    setFormData({ ...formData, description: "", value: undefined });
     setTimeout(() => {
       if (chatBoxRef) {
         chatBoxRef.scrollTop = chatBoxRef.scrollHeight;
@@ -71,6 +81,7 @@ const NewRegisterForm = ({ deliver }: Props) => {
       {addTransaction.isLoading && (
         <span className="text-success">salvand...</span>
       )}
+      {inputError && <span className="text-danger">{inputError}</span>}
       <form onSubmit={handleSubmit}>
         <div className="d-flex">
           <textarea
