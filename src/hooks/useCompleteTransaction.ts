@@ -7,13 +7,22 @@ const useCompleteTransaction = () => {
   const queryClient = useQueryClient();
   return useMutation<Transaction, Error, Transaction>({
     mutationFn: (data: Transaction) => client.completeTransaction(data.id || 0),
-    onSuccess: () => {
+    onSuccess: (data) => {
       // onSuccess: (responseData, SentData) => {
       // Invalidate the cache
       // console.log(responseData);
-      queryClient.invalidateQueries({
-        queryKey: ["transactions", "remain"],
-      });
+      // console.log(data);
+      // queryClient.invalidateQueries({
+      //   queryKey: ["transactions", "remain"],
+      // });
+
+      Promise.all([
+        queryClient.invalidateQueries(["transactions"]),
+        queryClient.invalidateQueries([
+          "remain",
+          { boss: data.boss_id, deliver: data.completed_by },
+        ]),
+      ]);
     },
   });
 };
