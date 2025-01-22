@@ -12,6 +12,7 @@ export interface Transaction {
   friend?: string;
   friend_paid: boolean;
   is_charge: boolean;
+  boss?: number;
   boss_id?: number;
 }
 interface QueryParams {

@@ -13,7 +13,7 @@ const useDeleteTransaction = () => {
         queryClient.invalidateQueries(["transactions"]),
         queryClient.invalidateQueries([
           "remain",
-          { boss: data.boss_id, deliver: data.completed_by },
+          { boss: data.boss, deliver: data.completed_by },
         ]),
       ]);
     },

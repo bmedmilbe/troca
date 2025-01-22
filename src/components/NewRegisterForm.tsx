@@ -25,7 +25,7 @@ const NewRegisterForm = ({ deliver }: Props) => {
     completed_by: deliver,
     friend_paid: false,
     is_charge: false,
-    boss_id: me?.id,
+    boss: me?.id,
   });
 
   const nextTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {

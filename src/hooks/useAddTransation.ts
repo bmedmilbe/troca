@@ -22,7 +22,7 @@ const useAddTransation = () => {
 
     onSuccess: (data) => {
       // Invalidate the cache
-
+      // console.log(data);
       Promise.all([
         queryClient.invalidateQueries(["transactions"]),
         queryClient.invalidateQueries([

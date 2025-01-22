@@ -40,11 +40,13 @@ const TransactionValue = ({ transaction, remain, handleDelete }: Props) => {
       //   setRemain(valuesIGot);
     }
   }, []);
+
   const color = (tr: Transaction) => {
     if (tr.is_charge) return "text-success";
     else if (tr.completed) return "text-secondary";
     return "text-warning";
   };
+
   return (
     <>
       <span
