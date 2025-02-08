@@ -59,10 +59,10 @@ const TransactionPage = () => {
           {/* <TransactionBoss deliver={deliver} me={me} /> */}
           {/* {me && me.boss && <TransactionBoss boss={me.id} deliver={newId} />} */}
           {/* {console.log({ boss: newId, deliver: deliver?.boss })} */}
-          {!isLoading && me && !me.boss && (
+          {/* {!isLoading && me && !me.boss && (
             <TransactionDeliver boss={newId} deliver={me.id} />
-          )}
-          {!isLoading && me && me.boss && (
+          )} */}
+          {!isLoading && me && (
             <TransactionDeliver boss={me.id} deliver={newId} />
           )}
         </div>
