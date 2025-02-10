@@ -51,6 +51,18 @@ const TransactionValue = ({ transaction, remain, handleDelete }: Props) => {
     return "text-warning";
   };
 
+  const formatNumberWithCommas = (number: number) => {
+    if (typeof number !== "number") {
+      return "Invalid input. Please provide a number.";
+    }
+
+    if (number < 1000) {
+      return number.toString(); // No commas needed for numbers less than 1000
+    }
+
+    return number.toLocaleString(); // Use toLocaleString() for easy comma formatting
+  };
+
   return (
     <>
       <span
@@ -58,7 +70,7 @@ const TransactionValue = ({ transaction, remain, handleDelete }: Props) => {
         onClick={() => setButtonsOpen(!buttonsOpen)}
       >
         {completed ? "-" : ""}
-        {value},00
+        {formatNumberWithCommas(value || 0)}
       </span>
       <span
         className="badge text-success text-lowercase"
