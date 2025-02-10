@@ -76,7 +76,7 @@ const TransactionValue = ({ transaction, remain, handleDelete }: Props) => {
         className="badge text-success text-lowercase"
         id={`hf${currentTransaction.id}`}
       >
-        {remain}
+        {formatNumberWithCommas(remain)}
       </span>
       {buttonsOpen && (
         <div className="d-flex justify-content-center border">
