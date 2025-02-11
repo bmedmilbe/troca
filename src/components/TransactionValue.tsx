@@ -56,7 +56,7 @@ const TransactionValue = ({ transaction, remain, handleDelete }: Props) => {
       return "Invalid input. Please provide a number.";
     }
 
-    if (number < 1000) {
+    if (Math.abs(number) < 1000) {
       return number.toString(); // No commas needed for numbers less than 1000
     }
 
