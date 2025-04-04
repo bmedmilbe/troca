@@ -67,7 +67,7 @@ const NewRegisterForm = ({ deliver }: Props) => {
     // return;
     addTransaction
       .mutateAsync({ ...formData, value: valueToSend })
-      .then((res) => {
+      .then(() => {
         let chatBoxRef = document.getElementById("transactions");
         setFormData({ ...formData, description: "", value: 0 });
         setTimeout(() => {

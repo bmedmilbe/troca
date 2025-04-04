@@ -28,7 +28,8 @@ const TransactionBoss = ({ deliver, boss }: Props) => {
 
   const deleteTransaction = useDeleteTransaction();
 
-  const handleDelete = (transaction: Transaction) => {
+  const handleDelete = (transaction?: Transaction) => {
+    if (!transaction) return;
     // console.log(transaction);
     if (!transaction.completed) {
       if (confirm("Tem certeza que quer apagar?")) {
