@@ -9,9 +9,10 @@ const PrivateLayout = () => {
 
   // if (data) return <Layout />;
   // if (!data) return <Navigate to="/login" />;
+  if (!localStorage.getItem("access")) return <Navigate to="/login" />;
+
   if (!isLoading) {
     if (data) return <Layout />;
-
     return <Navigate to="/login" />;
   } else {
     return (

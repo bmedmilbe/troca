@@ -5,14 +5,16 @@ import { Transaction } from "./useTransactions";
 const useCompleteTransaction = () => {
   const client = new ApiClient<Transaction>("troca/transactions");
   const queryClient = useQueryClient();
+
   return useMutation<Transaction, Error, Transaction>({
     mutationFn: (data: Transaction) => client.completeTransaction(data.id || 0),
+
     onSuccess: (data) => {
       Promise.all([
         queryClient.invalidateQueries(["transactions"]),
         queryClient.invalidateQueries([
           "remain",
-          { boss: data.boss, deliver: data.completed_by },
+          { boss: data.boss_id, deliver: data.completed_by },
         ]),
       ]);
     },

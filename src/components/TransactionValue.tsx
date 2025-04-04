@@ -5,47 +5,61 @@ import useCompleteTransaction from "../hooks/useCompleteTransaction";
 interface Props {
   transaction: Transaction;
   remain: number;
-  handleDelete: (transaction: Transaction) => void;
+  handleDelete: (transaction?: Transaction) => void;
 }
 const TransactionValue = ({ transaction, remain, handleDelete }: Props) => {
   const updateTransaction = useCompleteTransaction();
 
-  const [value, setValue] = useState(transaction.value);
-  const [currentTransaction, setCurrentTransaction] = useState(transaction);
-  const [completed, setCompleted] = useState(transaction.completed);
+  const [value, setValue] = useState<number>();
+  const [currentTransaction, setCurrentTransaction] = useState<Transaction>();
+  const [completed, setCompleted] = useState<boolean>();
 
+  useEffect(() => {
+    // console.log(transaction);
+    setValue(transaction.value || 0);
+    setCurrentTransaction(transaction);
+    setCompleted(transaction.completed);
+    setColor(handleColor(transaction));
+  }, [currentTransaction]);
   //   const remain = valuesIGot + 0;
   const [buttonsOpen, setButtonsOpen] = useState(false);
-  const handleComplete = (transaction: Transaction) => {
+  const handleComplete = (transaction: Transaction | undefined) => {
+    if (!transaction) return;
     // console.log(transaction);
     if (!transaction.completed) {
       if (confirm("Tem certeza que quer concluir?")) {
-        updateTransaction.mutate(transaction);
-        if (updateTransaction.data?.completed) {
-          setCurrentTransaction({ ...updateTransaction.data });
-        }
-        setColor(handleColor({ ...transaction, completed: true }));
-        setCompleted(true);
-        setButtonsOpen(false);
+        updateTransaction
+          .mutateAsync(transaction)
+          .then((res) => {
+            // console.log(res);
+            if (res.completed) {
+              setCurrentTransaction(res);
+              setColor(handleColor(res));
+              setCompleted(res.completed);
+              setButtonsOpen(false);
+            }
+          })
+          .catch((err) => console.log({ error: err }));
       }
     } else {
       alert("Informe ao gestor.");
     }
   };
 
-  useEffect(() => {
-    setValue(currentTransaction.value);
-    setColor(handleColor(currentTransaction));
-    if (completed) {
-      //should check who completed the transaction
-      //   setValuesIGot(valuesIGot - transaction.value);
-      //   setRemain(valuesIGot);
-    }
-  }, []);
+  // useEffect(() => {
+  //   setValue(currentTransaction.value);
+  //   setColor(handleColor(currentTransaction));
+  //   if (completed) {
+  //     //should check who completed the transaction
+  //     //   setValuesIGot(valuesIGot - transaction.value);
+  //     //   setRemain(valuesIGot);
+  //   }
+  // }, []);
 
   const [color, setColor] = useState("");
 
   const handleColor = (tr: Transaction) => {
+    // console.log(tr);
     if (tr.is_charge) return "text-success";
     else if (tr.completed) return "text-secondary";
     return "text-warning";
@@ -74,7 +88,7 @@ const TransactionValue = ({ transaction, remain, handleDelete }: Props) => {
       </span>
       <span
         className="badge text-success text-lowercase"
-        id={`hf${currentTransaction.id}`}
+        id={`hf${currentTransaction?.id}`}
       >
         {formatNumberWithCommas(remain)}
       </span>
@@ -85,7 +99,7 @@ const TransactionValue = ({ transaction, remain, handleDelete }: Props) => {
               onClick={() => handleComplete(currentTransaction)}
               className="m-1 btn btn-success btn-sm"
             >
-              {updateTransaction.isLoading ? "Conluindo..." : "Concluído"}
+              {updateTransaction.isLoading ? "Concluindo..." : "Concluído"}
             </button>
           )}
           <button

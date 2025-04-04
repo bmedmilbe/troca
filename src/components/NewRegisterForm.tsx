@@ -11,7 +11,7 @@ interface Props {
 const NewRegisterForm = ({ deliver }: Props) => {
   const { data: result } = useFriends<Friend>();
   const { data: me } = useMe<Customer>();
-
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const friends = result;
   const addTransaction = useAddTransation();
   const [formData, setFormData] = useState<Transaction>({
@@ -28,6 +28,8 @@ const NewRegisterForm = ({ deliver }: Props) => {
     boss: me?.id,
   });
   const [inputError, setInputError] = useState("");
+  const [valueToSend, setValueToSend] = useState<number>();
+
   const nextTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInputError("");
 
@@ -36,7 +38,12 @@ const NewRegisterForm = ({ deliver }: Props) => {
   const nextInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputError("");
 
-    setFormData({ ...formData, [e.target.id]: e.target.value });
+    setValueToSend(parseInt(e.target.value.replace(/\D/g, "")));
+    let value = e.target.value.replace(/\D/g, ""); // Remove non-digits
+    let formattedValue = value.replace(/\B(?=(\d{3})+(?!\d))/g, ","); // Add commas
+
+    // setFormData({ ...formData, [e.target.id]: e.target.value });
+    setFormData({ ...formData, [e.target.id]: formattedValue });
   };
   const nextInputCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.id]: e.target.checked });
@@ -55,21 +62,25 @@ const NewRegisterForm = ({ deliver }: Props) => {
       setInputError("Insira o valor.");
       return;
     }
+    setIsLoading(true);
     // console.log(formData);
     // return;
-    addTransaction.mutate({ ...formData });
-
-    let chatBoxRef = document.getElementById("transactions");
-    setFormData({ ...formData, description: "", value: undefined });
-    setTimeout(() => {
-      if (chatBoxRef) {
-        chatBoxRef.scrollTop = chatBoxRef.scrollHeight;
-      }
-      if (formData.is_charge && !addTransaction.isLoading) {
-        // nav("/users/" + deliver);
-        // window.location.reload();
-      }
-    }, 1000);
+    addTransaction
+      .mutateAsync({ ...formData, value: valueToSend })
+      .then((res) => {
+        let chatBoxRef = document.getElementById("transactions");
+        setFormData({ ...formData, description: "", value: 0 });
+        setTimeout(() => {
+          if (chatBoxRef) {
+            chatBoxRef.scrollTop = chatBoxRef.scrollHeight;
+            setIsLoading(false);
+          }
+        }, 1000);
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsLoading(false);
+      });
 
     // if (!addTransaction.isLoading && addTransaction?.data?.id) {
     //   addFriend.mutate({ ...formFriend, id: addTransaction.data.id });
@@ -78,9 +89,7 @@ const NewRegisterForm = ({ deliver }: Props) => {
 
   return (
     <>
-      {addTransaction.isLoading && (
-        <span className="text-success">salvand...</span>
-      )}
+      {isLoading && <span className="text-success">salvando...</span>}
       {inputError && <span className="text-danger">{inputError}</span>}
       <form onSubmit={handleSubmit}>
         <div className="d-flex">
@@ -129,16 +138,19 @@ const NewRegisterForm = ({ deliver }: Props) => {
           <div className="py-2 w-100">
             <input
               className="form-control rounded-0 border-0 border-0 border-bottom shadow-none"
-              type="number"
+              type="text"
               name="value"
               id="value"
               placeholder="Valor"
+              min={1}
               value={formData.value}
               onChange={nextInput}
             />
           </div>
           <div className="p-2 flex-shrink-1">
-            <button className="btn btn-primary">&rarr;</button>
+            <button disabled={isLoading} className="btn btn-primary">
+              {!isLoading ? <span>&rarr;</span> : "..."}
+            </button>
           </div>
         </div>
       </form>

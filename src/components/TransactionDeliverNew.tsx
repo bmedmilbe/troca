@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import useDeleteTransaction from "../hooks/useDeleteTransaction";
 import useRemain from "../hooks/useRemain";
 import useTransactions, { Transaction } from "../hooks/useTransactions";
@@ -8,7 +8,10 @@ interface Props {
   boss?: number;
   deliver?: number;
 }
-const TransactionDeliver = ({ boss, deliver }: Props) => {
+interface Remain {
+  remain: number;
+}
+const TransactionDeliverNew = ({ boss, deliver }: Props) => {
   const query_param = {
     boss: boss,
     is_charge: undefined,
@@ -40,41 +43,51 @@ const TransactionDeliver = ({ boss, deliver }: Props) => {
       alert("Informe ao gestor.");
     }
   };
-  const transactions = data?.pages
-    .slice()
-    .reverse()
-    .map(({ results }) => results.slice().reverse());
+  const [transactions, seTransactions] = useState<Transaction[][]>();
 
   // console.log(balance);
-  const remainFromDatabase = (balance?.enter || 0) - (balance?.out || 0);
+  const [remainFromDatabase, setRemainFromDatabase] = useState<number>();
   // const remainFromDatabase = 0;
   // console.log(remainFromDatabase);
   // somadetudo + x = balanco
   // x = balanco - somadatydo
-  const tenTrans =
-    transactions?.reduce(
-      (total, page) =>
-        total +
-        page.reduce((total2, transaction) => {
-          if (transaction.completed) {
-            return total2 - (transaction.value || 0);
-          } else if (transaction.is_charge) {
-            return total2 + (transaction.value || 0);
-          }
-          return total2;
-        }, 0),
-      0
-    ) || 0;
+  const [tenTrans, seTenTrans] = useState<number>();
 
-  let values = {
-    remain: tenTrans ? remainFromDatabase - tenTrans : remainFromDatabase,
-  };
+  const [values, setValues] = useState<Remain>();
   const handleSetRemain = (value: number) => {
-    values = { ...values, remain: value };
+    setValues({ remain: value });
 
-    return values.remain;
+    return values?.remain || 0;
   };
-  useEffect(() => {}, [remainFromDatabase]);
+  useEffect(() => {
+    let tempTr = data?.pages
+      .slice()
+      .reverse()
+      .map(({ results }) => results.slice().reverse());
+    seTransactions(tempTr || []);
+    let tempRemailFromDatanase = (balance?.enter || 0) - (balance?.out || 0);
+    setRemainFromDatabase(tempRemailFromDatanase);
+    let tempTenTrans =
+      tempTr?.reduce(
+        (total, page) =>
+          total +
+          page.reduce((total2, transaction) => {
+            if (transaction.completed) {
+              return total2 - (transaction.value || 0);
+            } else if (transaction.is_charge) {
+              return total2 + (transaction.value || 0);
+            }
+            return total2;
+          }, 0),
+        0
+      ) || 0;
+    seTenTrans(tempTenTrans);
+    setValues({
+      remain: tempTenTrans
+        ? tempRemailFromDatanase - tempTenTrans
+        : tempRemailFromDatanase,
+    });
+  }, []);
 
   // console.log(tenTrans);
 
@@ -124,7 +137,7 @@ const TransactionDeliver = ({ boss, deliver }: Props) => {
                     remain={handleSetRemain(
                       transaction.completed
                         ? handleSetRemain(values.remain - (transaction.value || 0))
-                        : values.remain
+                        : values?.remain || 0
                     )}
                   /> */}
                   {!transaction.is_charge ? (
@@ -134,9 +147,9 @@ const TransactionDeliver = ({ boss, deliver }: Props) => {
                       remain={handleSetRemain(
                         transaction.completed
                           ? handleSetRemain(
-                              values.remain - (transaction.value || 0)
+                              values?.remain || 0 - (transaction.value || 0)
                             )
-                          : values.remain
+                          : values?.remain || 0
                       )}
                     />
                   ) : (
@@ -145,7 +158,7 @@ const TransactionDeliver = ({ boss, deliver }: Props) => {
                       handleDelete={handleDelete}
                       remain={handleSetRemain(
                         handleSetRemain(
-                          values.remain + (transaction.value || 0)
+                          values?.remain || 0 + (transaction.value || 0)
                         )
                       )}
                     />
@@ -160,4 +173,4 @@ const TransactionDeliver = ({ boss, deliver }: Props) => {
   );
 };
 
-export default TransactionDeliver;
+export default TransactionDeliverNew;
