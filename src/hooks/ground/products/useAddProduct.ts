@@ -9,7 +9,7 @@ const useAddProduct = () => {
   return useMutation<Product, Error, Product>({
     mutationFn: apiClient.save,
 
-    onSuccess: (data) => {
+    onSuccess: () => {
       // Invalidate the cache
       // console.log(data);
       Promise.all([queryClient.invalidateQueries(["products"])]);

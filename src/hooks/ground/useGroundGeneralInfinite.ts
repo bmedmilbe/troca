@@ -36,7 +36,7 @@ const useGroundGeneralInfinite = <T>(
       });
     },
     queryKey: queryKey,
-    getNextPageParam: (lastPage, allPage) => {
+    getNextPageParam: (lastPage) => {
       // return 3;
       // console.log(allPage.length % 10);
       //check if no next page in last page

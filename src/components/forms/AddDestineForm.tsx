@@ -5,8 +5,6 @@ export interface Destine {
   name: string;
 }
 const AddDestineForm = () => {
-  const [inputError, setInputError] = useState("");
-
   const [formData, setFormData] = useState<Destine>({
     id: 0,
     name: "",

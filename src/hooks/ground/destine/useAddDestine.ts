@@ -9,7 +9,7 @@ const useAddDestine = () => {
   return useMutation<Destine, Error, Destine>({
     mutationFn: apiClient.save,
 
-    onSuccess: (data) => {
+    onSuccess: () => {
       // Invalidate the cache
       // console.log(data);
       Promise.all([queryClient.invalidateQueries(["destines"])]);

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import useCompleteTransaction from "../hooks/useCompleteTransaction";
 import { SellPaymentExpense } from "../hooks/ground/clients/useSellsByClients";
 
 interface Props {
@@ -10,7 +9,6 @@ interface Props {
 const SellValue = ({ sell, remain, handleDelete }: Props) => {
   const [value, setValue] = useState<number>();
   const [currentSell, setCurrentSell] = useState<SellPaymentExpense>();
-  const [completed, setCompleted] = useState<boolean>();
 
   useEffect(() => {
     // console.log({ d: currentSell?.date });
@@ -62,7 +60,6 @@ const SellValue = ({ sell, remain, handleDelete }: Props) => {
           className={`fw-bold fs-4 ${color}`}
           onClick={() => setButtonsOpen(!buttonsOpen)}
         >
-          {completed ? "-" : ""}
           {formatNumberWithCommas(value || 0)}
         </div>
 

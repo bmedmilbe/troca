@@ -16,7 +16,7 @@ const useAddSell = (clientId: number) => {
   return useMutation<NewSell, Error, NewSell>({
     mutationFn: client.save,
 
-    onSuccess: (data) => {
+    onSuccess: () => {
       // Invalidate the cache
       // console.log(data);
       Promise.all([queryClient.invalidateQueries(["sells", clientId])]);

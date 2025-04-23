@@ -15,7 +15,7 @@ const useAddExpense = (destineId: number) => {
   return useMutation<NewSell, Error, NewSell>({
     mutationFn: apiClient.save,
 
-    onSuccess: (data) => {
+    onSuccess: () => {
       // Invalidate the cache
       // console.log(data);
       Promise.all([queryClient.invalidateQueries(["balances"])]);

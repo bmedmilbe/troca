@@ -9,7 +9,7 @@ const useAddClient = () => {
   return useMutation<Client, Error, Client>({
     mutationFn: apiClient.save,
 
-    onSuccess: (data) => {
+    onSuccess: () => {
       // Invalidate the cache
       // console.log(data);
       Promise.all([queryClient.invalidateQueries(["clients"])]);

@@ -28,19 +28,12 @@ const RegisterSell = ({ clientId: clientId }: Props) => {
     is_payment: false,
   });
   const [inputError, setInputError] = useState("");
-  const [valueToSend, setValueToSend] = useState<number>();
   const addSell = useAddSell(clientId);
   const addClientPayment = useAddClientPayment(clientId);
 
-  const nextTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setInputError("");
-
-    setFormData({ ...formData, [e.target.id]: e.target.value });
-  };
   const nextInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputError("");
 
-    setValueToSend(parseInt(e.target.value.replace(/\D/g, "")));
     let value = e.target.value.replace(/\D/g, ""); // Remove non-digits
     let formattedValue = value.replace(/\B(?=(\d{3})+(?!\d))/g, ","); // Add commas
 
