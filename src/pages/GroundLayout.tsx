@@ -93,9 +93,9 @@ const GroundLayout = () => {
         <Link className="btn btn-primary" to={`/ground/expenses`}>
           Despesas
         </Link>
-        <Link className="btn btn-primary" to={`/ground/products`}>
+        {/* <Link className="btn btn-primary" to={`/ground/products`}>
           Produtos
-        </Link>
+        </Link> */}
       </div>
 
       <div className="p-1">
