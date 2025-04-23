@@ -4,6 +4,7 @@ export interface Client {
   id: number;
   name: string;
   tel: string;
+  balance?: string;
 }
 const AddClientForm = () => {
   const [formData, setFormData] = useState<Client>({

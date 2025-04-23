@@ -3,6 +3,7 @@ import useAddDestine from "../../hooks/ground/destine/useAddDestine";
 export interface Destine {
   id: number;
   name: string;
+  balance?: string;
 }
 const AddDestineForm = () => {
   const [formData, setFormData] = useState<Destine>({

@@ -14,10 +14,21 @@ const ClientsPage = () => {
           <Link
             key={key}
             to={`/ground/clients/${client.id}`}
-            className="list-group-item list-group-item-action"
+            className="list-group-item list-group-item-action d-flex"
             aria-current="true"
           >
-            &rarr; {client.name} {client.tel ? "|" : ""} {client.tel || ""}
+            <span className="flex-grow-1 p-2">
+              &rarr; {client.name} {client.tel ? "|" : ""} {client.tel || ""}
+            </span>
+            <div
+              className={`fw-bold p-2 ${
+                parseInt(client?.balance || "0") >= 0
+                  ? "text-success"
+                  : "text-danger"
+              }`}
+            >
+              {client.balance || ""}
+            </div>
           </Link>
         ))}
       </div>

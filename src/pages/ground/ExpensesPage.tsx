@@ -15,10 +15,19 @@ const ExpensesPage = () => {
           <Link
             key={key}
             to={`/ground/expenses/${destine.id}`}
-            className="list-group-item list-group-item-action"
+            className="list-group-item list-group-item-action d-flex"
             aria-current="true"
           >
-            &rarr; {destine.name}
+            <span className="flex-grow-1 p-2">&rarr; {destine.name} </span>
+            <div
+              className={`fw-bold p-2 ${
+                parseInt(destine?.balance || "0") >= 0
+                  ? "text-success"
+                  : "text-danger"
+              }`}
+            >
+              {destine.balance || ""}
+            </div>
           </Link>
         ))}
       </div>
