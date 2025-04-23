@@ -90,7 +90,7 @@ const GroundPage = () => {
                     </div>
                     <div className="p-3 flex-grow-1  fs-4 align-self-start">
                       {(sell?.destine?.name
-                        ? `Saío para ${sell.destine?.name}`
+                        ? `Saiu para ${sell.destine?.name}`
                         : "") ||
                         sell.product?.name ||
                         (sell.client?.name
