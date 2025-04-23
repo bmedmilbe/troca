@@ -83,7 +83,7 @@ const GroundLayout = () => {
           )}
         </div>
       </nav>
-      <div className="d-flex justify-content-between">
+      <div className="d-flex justify-content-around">
         <Link className="btn btn-primary" to={`/ground`}>
           Balanço
         </Link>
