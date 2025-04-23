@@ -3,7 +3,7 @@ import { Link, Outlet } from "react-router-dom";
 import { Customer } from "../hooks/useCustomers";
 import useMe from "../hooks/useMe";
 
-const Layout = () => {
+const GroundLayout = () => {
   // const nav = useNavigate();
   const handleLogout = () => {
     localStorage.removeItem("access");
@@ -83,6 +83,20 @@ const Layout = () => {
           )}
         </div>
       </nav>
+      <div className="d-flex justify-content-between">
+        <Link className="btn btn-primary" to={`/ground`}>
+          Balanço
+        </Link>
+        <Link className="btn btn-primary" to={`/ground/clients`}>
+          Vendedores
+        </Link>
+        <Link className="btn btn-primary" to={`/ground/expenses`}>
+          Despesas
+        </Link>
+        <Link className="btn btn-primary" to={`/ground/products`}>
+          Produtos
+        </Link>
+      </div>
 
       <div className="p-1">
         <Outlet />
@@ -91,4 +105,4 @@ const Layout = () => {
   );
 };
 
-export default Layout;
+export default GroundLayout;

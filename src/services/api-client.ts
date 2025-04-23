@@ -15,6 +15,8 @@ const instance = axios.create({
 });
 
 export interface ResponseA<T> {
+  next: string;
+  previous: string;
   count: number;
   results: T[];
 }
