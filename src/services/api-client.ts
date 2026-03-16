@@ -11,6 +11,7 @@ const instance = axios.create({
     "Content-Type": "application/json",
     authorization: jwt ? `JWT ${jwt}` : undefined,
     credentials: "include",
+    "X-Tenant-ID": "3",
   },
 });
 
