@@ -53,17 +53,7 @@ const Layout = () => {
                   <ul className="navbar-nav flex-grow-1">
                     <li className="nav-item my-2">
                       <Link className="nav-link" aria-current="page" to="/">
-                        Balanço
-                      </Link>
-                    </li>
-                    <li className="nav-item my-2">
-                      <Link className="nav-link" to="/friends">
-                        Amigos
-                      </Link>
-                    </li>
-                    <li className="nav-item my-2">
-                      <Link className="nav-link" to="/ground">
-                        Campo
+                        Ver Pessoas
                       </Link>
                     </li>
                   </ul>
@@ -83,7 +73,6 @@ const Layout = () => {
           )}
         </div>
       </nav>
-      
 
       <div className="p-1">
         <Outlet />
