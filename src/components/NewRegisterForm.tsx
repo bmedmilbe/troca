@@ -1,6 +1,5 @@
 import React, { FormEvent, useState } from "react";
 import useAddTransation from "../hooks/useAddTransation";
-import useFriends, { Friend } from "../hooks/useFriends";
 import { Transaction } from "../hooks/useTransactions";
 import useMe from "../hooks/useMe";
 import { Customer } from "../hooks/useCustomers";
@@ -9,10 +8,8 @@ interface Props {
   deliver: number;
 }
 const NewRegisterForm = ({ deliver }: Props) => {
-  const { data: result } = useFriends<Friend>();
   const { data: me } = useMe<Customer>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const friends = result;
   const addTransaction = useAddTransation();
   const [formData, setFormData] = useState<Transaction>({
     id: 0,
@@ -41,18 +38,12 @@ const NewRegisterForm = ({ deliver }: Props) => {
     setValueToSend(parseInt(e.target.value.replace(/\D/g, "")));
     let value = e.target.value.replace(/\D/g, ""); // Remove non-digits
     let formattedValue = value.replace(/\B(?=(\d{3})+(?!\d))/g, ","); // Add commas
-
-    // setFormData({ ...formData, [e.target.id]: e.target.value });
     setFormData({ ...formData, [e.target.id]: formattedValue });
   };
   const nextInputCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.id]: e.target.checked });
   };
 
-  const nextSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value });
-    // setFormFriend({ ...formFriend, [e.target.id]: e.target.value });
-  };
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent default form submission behavior
     if (!formData.description) {
@@ -63,8 +54,7 @@ const NewRegisterForm = ({ deliver }: Props) => {
       return;
     }
     setIsLoading(true);
-    // console.log(formData);
-    // return;
+
     addTransaction
       .mutateAsync({ ...formData, value: valueToSend })
       .then(() => {
@@ -81,10 +71,6 @@ const NewRegisterForm = ({ deliver }: Props) => {
         console.log(err);
         setIsLoading(false);
       });
-
-    // if (!addTransaction.isLoading && addTransaction?.data?.id) {
-    //   addFriend.mutate({ ...formFriend, id: addTransaction.data.id });
-    // }
   };
 
   return (
@@ -119,22 +105,6 @@ const NewRegisterForm = ({ deliver }: Props) => {
         </div>
 
         <div className="d-flex">
-          <div className="py-2 w-100">
-            <select
-              className="form-select rounded-0  border-0 border-bottom shadow-none"
-              name="friend"
-              id="friend"
-              value={formData?.friend}
-              onChange={nextSelect}
-            >
-              <option value={0}>Em nome de...</option>
-              {friends?.results?.map((a) => (
-                <option key={a.id} value={a.id}>
-                  {a.name}
-                </option>
-              ))}
-            </select>
-          </div>
           <div className="py-2 w-100">
             <input
               className="form-control rounded-0 border-0 border-0 border-bottom shadow-none"
