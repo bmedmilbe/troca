@@ -27,7 +27,7 @@ interface QueryParams {
 }
 
 const useTransactions = (query_params: QueryParams) => {
-  const apiClient = new ApiClient<Transaction>("troca/transactions/previews");
+  const apiClient = new ApiClient<Transaction>("troca/transactions");
   return useInfiniteQuery<ResponseA<Transaction>>({
     queryFn: ({ pageParam = 0 }) => {
       // console.log(pageParam);
@@ -35,15 +35,20 @@ const useTransactions = (query_params: QueryParams) => {
         params: {
           ...query_params,
           limit: 10,
-          max_id: pageParam,
+          offset: pageParam * 10,
         },
       });
     },
     queryKey: ["transactions"],
-    getNextPageParam: (lastPage) => {
-      return lastPage.results[lastPage.results.length - 1]?.id
-        ? lastPage.results[lastPage.results.length - 1].id
-        : undefined;
+    getNextPageParam: (lastPage, allPage) => {
+      // return 3;
+      // console.log(allPage.length % 10);
+      //check if no next page in last page
+      // console.log(lastPage);
+      // return 1;
+      let count = 0;
+      allPage.map((p) => (count = count + p.results.length));
+      return count != lastPage.count ? allPage.length : undefined;
     },
   });
 };

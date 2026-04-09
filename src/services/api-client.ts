@@ -42,6 +42,9 @@ class ApiClient<T> {
       .get<ResponseA<T>>(this.endpoint, params)
       .then((res) => res.data);
   };
+  getAllSecond2 = (params: AxiosRequestConfig) => {
+    return instance.get<T>(this.endpoint, params).then((res) => res.data);
+  };
   save = (data: T) => {
     return instance.post<T>(this.endpoint, data).then((res) => res.data);
   };

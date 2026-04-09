@@ -11,34 +11,18 @@ const SellValue = ({ sell, remain, handleDelete }: Props) => {
   const [currentSell, setCurrentSell] = useState<SellPaymentExpense>();
 
   useEffect(() => {
-    // console.log({ d: currentSell?.date });
     setValue((sell.price || sell.value) + 0);
     setCurrentSell(sell);
     setColor(handleColor(sell));
   }, [currentSell?.date]);
-  //   const remain = valuesIGot + 0;
   const [buttonsOpen, setButtonsOpen] = useState(false);
-
-  // useEffect(() => {
-  //   setValue(currentTransaction.value);
-  //   setColor(handleColor(currentTransaction));
-  //   if (completed) {
-  //     //should check who completed the transaction
-  //     //   setValuesIGot(valuesIGot - transaction.value);
-  //     //   setRemain(valuesIGot);
-  //   }
-  // }, []);
 
   const [color, setColor] = useState("");
 
   const handleColor = (tr: SellPaymentExpense) => {
-    // console.log(tr);
     if (tr.destine || tr.price) return "text-warning";
-    // if (tr.quantity) return "text-warning";
 
     return "text-success";
-    // else if (tr.completed) return "text-secondary";
-    return "text-warning";
   };
 
   const formatNumberWithCommas = (number: number) => {
@@ -47,7 +31,7 @@ const SellValue = ({ sell, remain, handleDelete }: Props) => {
     }
 
     if (Math.abs(number) < 1000) {
-      return number.toString(); // No commas needed for numbers less than 1000
+      return number.toString(); // No formatting needed for numbers less than 1000
     }
 
     return number.toLocaleString(); // Use toLocaleString() for easy comma formatting
