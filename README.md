@@ -1,50 +1,27 @@
-# React + TypeScript + Vite
+# 💸 Troca - High-Integrity Remittance System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A robust financial backend engine designed to handle international remittances with a focus on data integrity and concurrency control. This system serves as a core module within the **Centralized Multi-Tenant Government Kernel**, ensuring secure cash-flow reconciliation between international managers and local agents.
 
-Currently, two official plugins are available:
+## 🚀 Engineering Highlights & Business Value
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+* **Concurrency & Race Condition Prevention:** Implemented **PostgreSQL Pessimistic Locking (`select_for_update`)** to ensure that balance settlements are thread-safe, preventing double-spending or incorrect ledger entries during simultaneous transactions.
+* **ACID-Compliant Transactions:** Utilized **Django Atomic Transactions** to guarantee that complex multi-step financial operations (debit/credit) either succeed entirely or fail safely without data corruption.
+* **Financial Data Consistency:** Designed to provide 100% accuracy for government-level audits, ensuring that all state transitions in the financial database are resilient to system failures.
+* **Performance Optimized:** Optimized database throughput for high-frequency transaction tables using strategic **B-Tree indexing** and execution plan analysis via **EXPLAIN ANALYZE**.
 
-## Expanding the ESLint configuration
+## 🛠️ Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+* **Backend:** Python & Django REST Framework (DRF)
+* **Database:** PostgreSQL (Transaction Isolation & Locking)
+* **DevOps:** Railway, Docker
 
-- Configure the top-level `parserOptions` property like this:
+## ⚙️ Core Logic Overview
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+The system architecture follows strict financial engineering principles:
+1. **Validation:** Deep verification of agent balances and transaction limits.
+2. **Locking:** Row-level locking on the accounts involved using `select_for_update` to prevent concurrent state changes.
+3. **Execution:** Atomic execution of the transfer logic within a database transaction block.
+4. **Finalization:** Committing the new state to the database only after all integrity checks pass.
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+---
+*Developed by Edmilbe Ramos - Specialist in Secure Web Architectures 📍 Norfolk, UK*
